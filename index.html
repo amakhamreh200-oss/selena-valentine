@@ -104,14 +104,8 @@ button{
 
 </div>
 
-<!-- 🔊 Sounds -->
-<audio id="whoosh">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b7e0f43c6.mp3?filename=fast-whoosh-118248.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="fireLoop" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2021/09/09/audio_7f8e5c7e32.mp3?filename=fireworks-show-103138.mp3" type="audio/mpeg">
-</audio>
+<!-- 🎆 Single Fireworks Sound -->
+<audio id="fireSound" src="whoosh.mp3" loop></audio>
 
 <script>
 const canvas = document.getElementById("fireworks");
@@ -166,7 +160,7 @@ function animate(){
 
 animate();
 
-// NO move
+// NO button moves
 const noBtn = document.getElementById("no");
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
@@ -182,14 +176,9 @@ function moveNo(){
 // YES click
 document.getElementById("yes").addEventListener("click", function(){
 
-    const whoosh = document.getElementById("whoosh");
-    const fireLoop = document.getElementById("fireLoop");
-
-    whoosh.play(); // 🔊 فتيش
-
-    setTimeout(()=>{
-        fireLoop.play(); // 🎆 صوت مستمر
-    },500);
+    const fireSound = document.getElementById("fireSound");
+    fireSound.currentTime = 0;
+    fireSound.play();
 
     document.body.style.background = "#0d1b3d";
     document.getElementById("title").style.color="white";
@@ -204,4 +193,3 @@ document.getElementById("yes").addEventListener("click", function(){
 
 </body>
 </html>
-

@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Selena Valentine 💖</title>
 
 <style>
 body{
     margin:0;
     font-family: 'Segoe UI', sans-serif;
-    overflow:hidden;
-    background:#0d1b3d;
-    color:white;
     text-align:center;
+    background:#f7cfd8;
+    transition: background 1s ease;
+    overflow:hidden;
 }
 
 canvas{
@@ -22,29 +23,31 @@ canvas{
 }
 
 .container{
-    margin-top:80px;
+    padding:40px 20px;
 }
 
 .bear{
-    width:140px;
+    width:180px;
     margin-bottom:20px;
 }
 
 h1{
-    font-size:45px;
+    font-size:26px;
+    color:#333;
+    transition:color 1s;
 }
 
 .buttons{
-    margin-top:40px;
+    margin-top:30px;
 }
 
 button{
     border:none;
-    padding:18px 40px;
-    font-size:22px;
+    padding:15px 30px;
+    font-size:18px;
     border-radius:40px;
     cursor:pointer;
-    margin:20px;
+    margin:15px;
 }
 
 #yes{
@@ -53,17 +56,30 @@ button{
 }
 
 #no{
-    background:#cfcfcf;
+    background:#ddd;
 }
 
-.celebrate{
+.romantic{
     display:none;
     margin-top:30px;
 }
 
-.celebrate img{
-    width:450px;
+.romantic img{
+    width:90%;
+    max-width:350px;
     border-radius:20px;
+}
+
+/* Celebration text animation */
+#finalText{
+    font-size:32px;
+    animation: pop 0.6s ease;
+}
+
+@keyframes pop{
+    0%{transform:scale(0);}
+    70%{transform:scale(1.3);}
+    100%{transform:scale(1);}
 }
 </style>
 </head>
@@ -73,38 +89,38 @@ button{
 
 <div class="container">
 
-<img class="bear" src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png">
+<!-- 🧸 LOCAL IMAGE -->
+<img class="bear" src="bear.png">
 
-<h1>Selena will you be my Valentine ?</h1>
+<h1 id="title">Selena will you be my Valentine ?</h1>
 
 <div class="buttons">
     <button id="no">No 🙂</button>
     <button id="yes">Yes ❤️🔥</button>
 </div>
 
-<div class="celebrate" id="celebrate">
-    <h2>YAAAY!! 🎉🎆</h2>
-    <img src="https://images.unsplash.com/photo-1529634897991-3f8a6e8a5f9b">
+<div class="romantic" id="romantic">
+    <h2 id="finalText">Yesssssss ❤️🔥</h2>
+    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7">
 </div>
 
 </div>
 
-<!-- 🎵 Romantic Music -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b6e9e8e6f.mp3?filename=romantic-background-112191.mp3" type="audio/mpeg">
-</audio>
-
-<!-- 🔊 Whoosh Sound -->
+<!-- 🔊 WHOOSH SOUND -->
 <audio id="whoosh">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b3f8b8f5f.mp3?filename=whoosh-6316.mp3" type="audio/mpeg">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+window.addEventListener("resize",()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 
 let particles = [];
 let fireworksStarted = false;
@@ -113,7 +129,7 @@ function createFirework(){
     const x = Math.random()*canvas.width;
     const y = Math.random()*canvas.height/2;
 
-    for(let i=0;i<80;i++){
+    for(let i=0;i<70;i++){
         particles.push({
             x:x,
             y:y,
@@ -126,8 +142,7 @@ function createFirework(){
 }
 
 function animate(){
-    ctx.fillStyle="rgba(13,27,61,0.2)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     particles.forEach((p,i)=>{
         p.x += Math.cos(p.angle)*p.speed;
@@ -149,32 +164,33 @@ function animate(){
 
 animate();
 
-// NO button moves
+// NO moves
 const noBtn = document.getElementById("no");
-noBtn.addEventListener("mouseenter", function(){
-    const x = Math.random()*window.innerWidth;
-    const y = Math.random()*window.innerHeight;
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+function moveNo(){
+    const x = Math.random()*(window.innerWidth-120);
+    const y = Math.random()*(window.innerHeight-60);
     noBtn.style.position="absolute";
     noBtn.style.left=x+"px";
     noBtn.style.top=y+"px";
-});
+}
 
 // YES click
 document.getElementById("yes").addEventListener("click", function(){
 
-    document.getElementById("whoosh").play(); // 🔊 whoosh
+    document.getElementById("whoosh").play();
+
+    document.body.style.background = "#0d1b3d";
+    document.getElementById("title").style.color="white";
+
+    document.getElementById("romantic").style.display="block";
 
     if(!fireworksStarted){
         fireworksStarted = true;
-        setInterval(createFirework,1000); // 🎆 start fireworks
+        setInterval(createFirework,1000);
     }
-
-    document.getElementById("celebrate").style.display="block";
-
-    setTimeout(()=>{
-        document.getElementById("music").play(); // 🎵 start music
-    },400);
-
 });
 </script>
 
